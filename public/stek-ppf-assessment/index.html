@@ -13,16 +13,16 @@
     --line:#2a2a2a;
     --text:#f2f2f2;
     --text-dim:#9a9a9a;
-    --red:#e2001a;
-    --red-dark:#a8000f;
+    --red:#a8473c;
+    --red-dark:#7c332a;
     --green:#2fae57;
     --green-bg:rgba(47,174,87,.16);
-    --fail-bg:rgba(226,0,26,.16);
+    --fail-bg:rgba(168,71,60,.22);
     --amber:#e0a300;
     --amber-bg:rgba(224,163,0,.16);
     --gray:#8a8a8a;
     --gray-bg:rgba(255,255,255,.06);
-    --radius:14px;
+    --radius:10px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:var(--ink);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
@@ -88,7 +88,7 @@
   .measure-hint.fail{color:var(--red);}
 
   .seg{display:flex;gap:6px;}
-  .seg button{flex:1;min-height:40px;border-radius:9px;border:1.5px solid var(--line);background:var(--panel-2);font-size:13px;font-weight:700;letter-spacing:.2px;color:var(--text-dim);transition:all .12s ease;}
+  .seg button{flex:1;min-height:40px;border-radius:6px;border:1.5px solid var(--line);background:var(--panel-2);font-size:13px;font-weight:700;letter-spacing:.2px;color:var(--text-dim);transition:all .12s ease;}
   .seg button.active.pass{background:var(--green);border-color:var(--green);color:#06210f;}
   .seg button.active.fail{background:var(--red);border-color:var(--red);color:#fff;}
   .seg button.active.na{background:#4a4a4a;border-color:#4a4a4a;color:#fff;}
@@ -98,20 +98,22 @@
   .section-extra textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;min-height:56px;background:var(--panel-2);color:var(--text);}
 
   .photo-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
-  .photo-thumb{position:relative;width:76px;height:76px;border-radius:10px;overflow:hidden;border:1px solid var(--line);}
+  .photo-thumb{position:relative;width:76px;height:76px;border-radius:8px;overflow:hidden;border:1px solid var(--line);}
   .photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
   .photo-thumb .rm{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;border:none;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center;}
-  .photo-add{width:76px;height:76px;border-radius:10px;border:2px dashed var(--line);background:var(--panel-2);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-dim);font-size:11px;gap:2px;}
+  .photo-add{width:76px;height:76px;border-radius:8px;border:2px dashed var(--line);background:var(--panel-2);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-dim);font-size:11px;gap:2px;}
   .photo-add span.plus{font-size:20px;line-height:1;color:var(--red);}
   .photo-add input{display:none;}
 
   .actions-card{display:flex;flex-direction:column;gap:10px;}
-  .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 16px;border-radius:12px;border:none;font-size:13.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;min-height:46px;}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 16px;border-radius:6px;border:none;font-size:14px;font-weight:700;letter-spacing:.1px;min-height:46px;}
+  .btn .arrow{transition:transform .15s ease;}
+  .btn:active .arrow{transform:translateX(2px);}
   .btn-primary{background:var(--red);color:#fff;}
   .btn-primary:active{background:var(--red-dark);}
-  .btn-outline{background:var(--panel-2);border:1.5px solid var(--line);color:var(--text);}
-  .btn-outline:active{border-color:var(--red);}
-  .btn-danger{background:var(--panel-2);border:1.5px solid var(--red);color:var(--red);}
+  .btn-outline{background:transparent;border:1.5px solid var(--line);color:var(--text);}
+  .btn-outline:active{border-color:var(--red);color:var(--red);}
+  .btn-danger{background:transparent;border:1.5px solid var(--red);color:var(--red);}
   .btn-row{display:flex;gap:10px;}
   .btn-row .btn{flex:1;}
   .hint-text{font-size:11.5px;color:var(--text-dim);text-align:center;margin-top:2px;text-transform:none;letter-spacing:0;}
@@ -178,15 +180,15 @@
   <div class="card actions-card">
     <h2 style="margin-bottom:2px;">Export Report</h2>
     <div class="btn-row">
-      <button class="btn btn-primary" id="btnPrint">Print / Save as PDF</button>
+      <button class="btn btn-primary" id="btnPrint">Print / Save as PDF <span class="arrow" aria-hidden="true">→</span></button>
     </div>
     <div class="btn-row">
-      <button class="btn btn-outline" id="btnDownloadHtml">Download Report</button>
-      <button class="btn btn-outline" id="btnDownloadJson">Backup (JSON)</button>
+      <button class="btn btn-outline" id="btnDownloadHtml">Download Report <span class="arrow" aria-hidden="true">→</span></button>
+      <button class="btn btn-outline" id="btnDownloadJson">Backup (JSON) <span class="arrow" aria-hidden="true">→</span></button>
     </div>
     <div class="btn-row">
       <label class="btn btn-outline" style="margin:0;">
-        Restore Backup
+        Restore Backup <span class="arrow" aria-hidden="true">→</span>
         <input type="file" id="fileRestore" accept="application/json" style="display:none;" />
       </label>
       <button class="btn btn-danger" id="btnReset">New Assessment</button>
@@ -641,7 +643,7 @@
 
   function buildReportHtml(){
     var status = overallStatus();
-    var statusColor = status === "pass" ? "#1a7a3c" : status === "fail" ? "#e2001a" : "#a3720a";
+    var statusColor = status === "pass" ? "#1a7a3c" : status === "fail" ? "#a8473c" : "#a3720a";
     var statusBg = status === "pass" ? "#e6f6ea" : status === "fail" ? "#fdeaec" : "#fdf2de";
     var m = state.meta;
     var now = new Date();
@@ -650,13 +652,13 @@
     var sectionsHtml = SECTIONS.map(function(section){
       var sState = state.sections[section.id];
       var sStatus = sectionStatus(section);
-      var sColor = sStatus === "pass" ? "#1a7a3c" : sStatus === "fail" ? "#e2001a" : "#a3720a";
+      var sColor = sStatus === "pass" ? "#1a7a3c" : sStatus === "fail" ? "#a8473c" : "#a3720a";
       var sBg = sStatus === "pass" ? "#e6f6ea" : sStatus === "fail" ? "#fdeaec" : "#fdf2de";
 
       var rows = section.items.map(function(item){
         var itState = sState.items[item.id];
         var r = itState.result;
-        var rColor = r === "pass" ? "#1a7a3c" : r === "fail" ? "#e2001a" : r === "na" ? "#6b7280" : "#a3720a";
+        var rColor = r === "pass" ? "#1a7a3c" : r === "fail" ? "#a8473c" : r === "na" ? "#6b7280" : "#a3720a";
         var rBg = r === "pass" ? "#e6f6ea" : r === "fail" ? "#fdeaec" : r === "na" ? "#f0f1f3" : "#fdf2de";
         var valueTxt = item.measure && itState.value !== "" && itState.value !== undefined ? (" (" + itState.value + item.measure.unit + ")") : "";
         return '<tr>' +
@@ -689,11 +691,11 @@
       'table{width:100%;}' +
       '@media print{ body{padding:0;} }' +
       '</style></head><body>' +
-      '<div style="border-bottom:4px solid #e2001a;padding-bottom:14px;margin-bottom:20px;">' +
+      '<div style="border-bottom:4px solid #a8473c;padding-bottom:14px;margin-bottom:20px;">' +
       '<div style="display:flex;align-items:center;gap:8px;">' +
       '<span style="font-size:22px;font-weight:900;letter-spacing:1.5px;color:#111;">STEK</span>' +
-      '<span style="width:3px;height:16px;background:#e2001a;display:inline-block;"></span>' +
-      '<span style="font-size:12px;font-weight:800;letter-spacing:3px;color:#e2001a;">PPF</span>' +
+      '<span style="width:3px;height:16px;background:#a8473c;display:inline-block;"></span>' +
+      '<span style="font-size:12px;font-weight:800;letter-spacing:3px;color:#a8473c;">PPF</span>' +
       '</div>' +
       '<h1 style="font-size:15px;margin:6px 0 0;color:#333;text-transform:uppercase;letter-spacing:.4px;font-weight:700;">Install-Readiness Assessment Report</h1>' +
       '<div style="font-size:12px;color:#6b7280;margin-top:4px;">Report ID: ' + reportId + ' &nbsp;•&nbsp; Generated ' + now.toLocaleString() + '</div>' +
