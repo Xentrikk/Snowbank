@@ -3,115 +3,123 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0b3d91" />
+<meta name="theme-color" content="#0a0a0a" />
 <title>STEK PPF Install-Readiness Checklist</title>
 <style>
   :root{
-    --blue:#0b3d91;
-    --blue-dark:#082a66;
-    --green:#1a7a3c;
-    --green-bg:#e6f6ea;
-    --red:#c62828;
-    --red-bg:#fdecea;
-    --amber:#b8860b;
-    --amber-bg:#fff6e0;
-    --gray:#6b7280;
-    --gray-bg:#f0f1f3;
-    --border:#dde1e6;
-    --bg:#f5f6f8;
-    --card:#ffffff;
-    --text:#1c2230;
+    --ink:#0a0a0a;
+    --panel:#161616;
+    --panel-2:#1f1f1f;
+    --line:#2a2a2a;
+    --text:#f2f2f2;
+    --text-dim:#9a9a9a;
+    --red:#e2001a;
+    --red-dark:#a8000f;
+    --green:#2fae57;
+    --green-bg:rgba(47,174,87,.16);
+    --fail-bg:rgba(226,0,26,.16);
+    --amber:#e0a300;
+    --amber-bg:rgba(224,163,0,.16);
+    --gray:#8a8a8a;
+    --gray-bg:rgba(255,255,255,.06);
     --radius:14px;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--ink);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
   body{padding-bottom:64px;}
   img{max-width:100%;}
   h1,h2,h3{margin:0;}
   button{font-family:inherit;cursor:pointer;}
-  input,textarea,select{font-family:inherit;}
+  input,textarea,select{font-family:inherit;color-scheme:dark;}
 
-  .topbar{position:sticky;top:0;z-index:20;background:var(--blue);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-top,0px));padding-top:calc(12px + env(safe-area-inset-top,0px));box-shadow:0 2px 8px rgba(0,0,0,.15);}
+  .topbar{position:sticky;top:0;z-index:20;background:var(--ink);color:#fff;padding:14px 16px 12px;padding-top:calc(14px + env(safe-area-inset-top,0px));border-bottom:3px solid var(--red);box-shadow:0 2px 14px rgba(0,0,0,.5);}
   .topbar-inner{max-width:760px;margin:0 auto;}
-  .topbar h1{font-size:17px;font-weight:700;letter-spacing:.2px;}
-  .topbar .sub{font-size:12px;opacity:.85;margin-top:2px;}
-  .status-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;}
-  .status-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:700;background:rgba(255,255,255,.15);}
-  .status-pill.pass{background:#1a7a3c;}
-  .status-pill.fail{background:#c62828;}
-  .status-pill.incomplete{background:#b8860b;}
-  .progress-wrap{flex:1;min-width:120px;height:8px;background:rgba(255,255,255,.25);border-radius:999px;overflow:hidden;}
-  .progress-bar{height:100%;background:#fff;border-radius:999px;transition:width .25s ease;}
-  .progress-label{font-size:11.5px;opacity:.85;white-space:nowrap;}
+  .brand-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .brand-stek{font-size:21px;font-weight:900;letter-spacing:1.5px;color:#fff;}
+  .brand-divider{width:3px;height:15px;background:var(--red);border-radius:1px;}
+  .brand-ppf{font-size:12px;font-weight:800;letter-spacing:3px;color:var(--red);text-transform:uppercase;}
+  .topbar h1{font-size:13px;font-weight:600;letter-spacing:.6px;color:#d8d8d8;text-transform:uppercase;}
+  .topbar .sub{font-size:12px;color:var(--text-dim);margin-top:2px;}
+  .status-row{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap;}
+  .status-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:11.5px;font-weight:800;letter-spacing:.4px;background:var(--gray-bg);color:var(--text-dim);}
+  .status-pill.pass{background:var(--green);color:#06210f;}
+  .status-pill.fail{background:var(--red);color:#fff;}
+  .status-pill.incomplete{background:var(--amber);color:#241900;}
+  .progress-wrap{flex:1;min-width:120px;height:7px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;}
+  .progress-bar{height:100%;background:var(--red);border-radius:999px;transition:width .25s ease;}
+  .progress-label{font-size:11.5px;color:var(--text-dim);white-space:nowrap;}
 
   .container{max-width:760px;margin:0 auto;padding:16px;}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
-  .card h2{font-size:15px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+  .card h2{font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#fff;}
   .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
   @media (max-width:480px){.field-grid{grid-template-columns:1fr;}}
-  .field label{display:block;font-size:12px;font-weight:600;color:var(--gray);margin-bottom:4px;}
-  .field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:15px;background:#fafbfc;}
-  .field input:focus,.field textarea:focus,.field select:focus{outline:2px solid var(--blue);outline-offset:-1px;background:#fff;}
+  .field label{display:block;font-size:11.5px;font-weight:600;color:var(--text-dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px;}
+  .field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:var(--panel-2);color:var(--text);}
+  .field input::placeholder,.field textarea::placeholder{color:#6b6b6b;}
+  .field input:focus,.field textarea:focus,.field select:focus{outline:2px solid var(--red);outline-offset:-1px;background:#242424;}
   .field textarea{resize:vertical;min-height:56px;}
 
   .section-card{padding:0;overflow:hidden;}
   .section-head{display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer;-webkit-user-select:none;user-select:none;}
-  .section-head .icon{font-size:20px;width:28px;text-align:center;flex-shrink:0;}
+  .section-head .icon{width:30px;height:30px;flex-shrink:0;color:var(--red);display:flex;align-items:center;justify-content:center;}
+  .section-head .icon svg{width:22px;height:22px;}
   .section-head .titles{flex:1;min-width:0;}
-  .section-head h2{font-size:15.5px;}
-  .section-head .count{font-size:12px;color:var(--gray);margin-top:2px;}
-  .section-badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--gray-bg);color:var(--gray);white-space:nowrap;}
+  .section-head h2{font-size:14.5px;font-weight:700;letter-spacing:.2px;text-transform:none;color:#fff;}
+  .section-head .count{font-size:11.5px;color:var(--text-dim);margin-top:2px;}
+  .section-badge{font-size:10.5px;font-weight:800;letter-spacing:.3px;padding:4px 10px;border-radius:999px;background:var(--gray-bg);color:var(--text-dim);white-space:nowrap;}
   .section-badge.pass{background:var(--green-bg);color:var(--green);}
-  .section-badge.fail{background:var(--red-bg);color:var(--red);}
+  .section-badge.fail{background:var(--fail-bg);color:var(--red);}
   .section-badge.incomplete{background:var(--amber-bg);color:var(--amber);}
-  .chevron{transition:transform .2s ease;color:var(--gray);flex-shrink:0;}
+  .chevron{transition:transform .2s ease;color:var(--text-dim);flex-shrink:0;}
   .section-card.open .chevron{transform:rotate(180deg);}
   .section-body{max-height:0;overflow:hidden;transition:max-height .25s ease;}
   .section-card.open .section-body{max-height:4000px;}
-  .section-body-inner{padding:0 16px 16px;border-top:1px solid var(--border);}
+  .section-body-inner{padding:0 16px 16px;border-top:1px solid var(--line);}
 
-  .item{padding:14px 0;border-bottom:1px solid #eef0f3;}
+  .item{padding:14px 0;border-bottom:1px solid #232323;}
   .item:last-of-type{border-bottom:none;}
-  .item-label{font-size:14px;line-height:1.4;margin-bottom:10px;}
+  .item-label{font-size:14px;line-height:1.4;margin-bottom:10px;color:#e8e8e8;}
   .measure-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
-  .measure-row input{width:90px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:15px;}
-  .measure-row select{padding:8px;border:1px solid var(--border);border-radius:8px;font-size:14px;}
-  .measure-hint{font-size:12px;color:var(--gray);flex-basis:100%;}
+  .measure-row input{width:90px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:15px;background:var(--panel-2);color:var(--text);}
+  .measure-row select{padding:8px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:var(--panel-2);color:var(--text);}
+  .measure-hint{font-size:12px;color:var(--text-dim);flex-basis:100%;}
   .measure-hint.pass{color:var(--green);}
   .measure-hint.fail{color:var(--red);}
 
   .seg{display:flex;gap:6px;}
-  .seg button{flex:1;min-height:40px;border-radius:9px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:700;color:var(--gray);transition:all .12s ease;}
-  .seg button.active.pass{background:var(--green);border-color:var(--green);color:#fff;}
+  .seg button{flex:1;min-height:40px;border-radius:9px;border:1.5px solid var(--line);background:var(--panel-2);font-size:13px;font-weight:700;letter-spacing:.2px;color:var(--text-dim);transition:all .12s ease;}
+  .seg button.active.pass{background:var(--green);border-color:var(--green);color:#06210f;}
   .seg button.active.fail{background:var(--red);border-color:var(--red);color:#fff;}
-  .seg button.active.na{background:var(--gray);border-color:var(--gray);color:#fff;}
+  .seg button.active.na{background:#4a4a4a;border-color:#4a4a4a;color:#fff;}
 
   .section-extra{margin-top:6px;}
-  .section-extra label{display:block;font-size:12px;font-weight:600;color:var(--gray);margin:12px 0 4px;}
-  .section-extra textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;min-height:56px;background:#fafbfc;}
+  .section-extra label{display:block;font-size:11.5px;font-weight:600;color:var(--text-dim);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.3px;}
+  .section-extra textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;min-height:56px;background:var(--panel-2);color:var(--text);}
 
   .photo-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
-  .photo-thumb{position:relative;width:76px;height:76px;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+  .photo-thumb{position:relative;width:76px;height:76px;border-radius:10px;overflow:hidden;border:1px solid var(--line);}
   .photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
-  .photo-thumb .rm{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:none;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center;}
-  .photo-add{width:76px;height:76px;border-radius:10px;border:2px dashed var(--border);background:#fafbfc;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--gray);font-size:11px;gap:2px;}
-  .photo-add span.plus{font-size:20px;line-height:1;}
+  .photo-thumb .rm{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;border:none;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center;}
+  .photo-add{width:76px;height:76px;border-radius:10px;border:2px dashed var(--line);background:var(--panel-2);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-dim);font-size:11px;gap:2px;}
+  .photo-add span.plus{font-size:20px;line-height:1;color:var(--red);}
   .photo-add input{display:none;}
 
   .actions-card{display:flex;flex-direction:column;gap:10px;}
-  .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 16px;border-radius:12px;border:none;font-size:14.5px;font-weight:700;min-height:46px;}
-  .btn-primary{background:var(--blue);color:#fff;}
-  .btn-primary:active{background:var(--blue-dark);}
-  .btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--text);}
-  .btn-danger{background:#fff;border:1.5px solid var(--red);color:var(--red);}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 16px;border-radius:12px;border:none;font-size:13.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;min-height:46px;}
+  .btn-primary{background:var(--red);color:#fff;}
+  .btn-primary:active{background:var(--red-dark);}
+  .btn-outline{background:var(--panel-2);border:1.5px solid var(--line);color:var(--text);}
+  .btn-outline:active{border-color:var(--red);}
+  .btn-danger{background:var(--panel-2);border:1.5px solid var(--red);color:var(--red);}
   .btn-row{display:flex;gap:10px;}
   .btn-row .btn{flex:1;}
-  .hint-text{font-size:12px;color:var(--gray);text-align:center;margin-top:2px;}
+  .hint-text{font-size:11.5px;color:var(--text-dim);text-align:center;margin-top:2px;text-transform:none;letter-spacing:0;}
 
-  .save-toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%) translateY(20px);background:#1c2230;color:#fff;padding:9px 16px;border-radius:999px;font-size:12.5px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:30;}
+  .save-toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%) translateY(20px);background:#fff;color:#111;padding:9px 16px;border-radius:999px;font-size:12.5px;font-weight:600;opacity:0;pointer-events:none;transition:all .25s ease;z-index:30;box-shadow:0 4px 16px rgba(0,0,0,.4);}
   .save-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  .footer-note{font-size:11.5px;color:var(--gray);text-align:center;padding:8px 20px 24px;line-height:1.5;}
+  .footer-note{font-size:11px;color:#666;text-align:center;padding:8px 20px 24px;line-height:1.5;}
 
   #printArea{display:none;}
   @media print{
@@ -124,7 +132,12 @@
 
 <div class="topbar">
   <div class="topbar-inner">
-    <h1>STEK PPF Install-Readiness Checklist</h1>
+    <div class="brand-row">
+      <span class="brand-stek">STEK</span>
+      <span class="brand-divider"></span>
+      <span class="brand-ppf">PPF</span>
+    </div>
+    <h1>Install-Readiness Checklist</h1>
     <div class="sub">Environment &amp; vehicle surface assessment</div>
     <div class="status-row">
       <span class="status-pill incomplete" id="overallPill">INCOMPLETE</span>
@@ -156,7 +169,7 @@
       <div class="field"><label for="f-sig">Assessor Signature (type full name)</label><input id="f-sig" type="text" placeholder="Type your full name to sign" /></div>
       <div class="field"><label for="f-sigdate">Signed On</label><input id="f-sigdate" type="date" /></div>
     </div>
-    <label style="display:flex;align-items:flex-start;gap:8px;margin-top:12px;font-size:13px;color:var(--gray);">
+    <label style="display:flex;align-items:flex-start;gap:8px;margin-top:12px;font-size:13px;color:var(--text-dim);">
       <input type="checkbox" id="f-certify" style="margin-top:3px;" />
       I certify that this assessment accurately reflects the install environment and vehicle condition observed at the time of inspection.
     </label>
@@ -165,23 +178,23 @@
   <div class="card actions-card">
     <h2 style="margin-bottom:2px;">Export Report</h2>
     <div class="btn-row">
-      <button class="btn btn-primary" id="btnPrint">🖨️ Print / Save as PDF</button>
+      <button class="btn btn-primary" id="btnPrint">Print / Save as PDF</button>
     </div>
     <div class="btn-row">
-      <button class="btn btn-outline" id="btnDownloadHtml">⬇️ Download Report (HTML)</button>
-      <button class="btn btn-outline" id="btnDownloadJson">⬇️ Backup (JSON)</button>
+      <button class="btn btn-outline" id="btnDownloadHtml">Download Report</button>
+      <button class="btn btn-outline" id="btnDownloadJson">Backup (JSON)</button>
     </div>
     <div class="btn-row">
       <label class="btn btn-outline" style="margin:0;">
-        ⤴️ Restore Backup
+        Restore Backup
         <input type="file" id="fileRestore" accept="application/json" style="display:none;" />
       </label>
-      <button class="btn btn-danger" id="btnReset">🗑️ New Assessment</button>
+      <button class="btn btn-danger" id="btnReset">New Assessment</button>
     </div>
-    <div class="hint-text">The downloaded HTML report is self-contained (photos included) and can be emailed or submitted directly to STEK.</div>
+    <div class="hint-text">The downloaded report is self-contained (photos included) and can be emailed or submitted directly to STEK.</div>
   </div>
 
-  <div class="footer-note">Draft is saved automatically on this device. STEK PPF is a trademark of its respective owner; this tool is an independent install-readiness aid.</div>
+  <div class="footer-note">Draft is saved automatically on this device. STEK® is a trademark of its respective owner; this independent tool is not affiliated with or endorsed by STEK, and brand styling here is an approximation.</div>
 </div>
 
 <div class="save-toast" id="saveToast">Draft saved</div>
@@ -194,9 +207,18 @@
 
   var STORAGE_KEY = "stekPpfAssessmentV1";
 
+  var ICONS = {
+    temperature: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="4" width="4" height="11" rx="2"/><circle cx="12" cy="18" r="3"/><line x1="12" y1="7" x2="12" y2="14.5" stroke-width="2"/></svg>',
+    humidity: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 3C9 7 6 11 6 15a6 6 0 0 0 12 0c0-4-3-8-6-12Z"/></svg>',
+    cleanliness: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2 13.4 9.4 21 11 13.4 12.6 12 20 10.6 12.6 3 11 10.6 9.4Z"/><circle cx="19" cy="5" r="1.2"/></svg>',
+    "dust-control": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10a3 3 0 1 0-3-3"/><path d="M3 16h14a3 3 0 1 1-3 3"/><path d="M3 12h7"/></svg>',
+    lighting: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6M10 18h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.3 1 2.1h5c0-.8.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/></svg>',
+    "surface-condition": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l1.5-5a2 2 0 0 1 1.9-1.4h9.2a2 2 0 0 1 1.9 1.4L20 16"/><path d="M3 16h18v2a1 1 0 0 1-1 1h-1a2 2 0 1 1-4 0H9a2 2 0 1 1-4 0H4a1 1 0 0 1-1-1v-2Z"/></svg>'
+  };
+
   var SECTIONS = [
     {
-      id: "temperature", icon: "🌡️", title: "Temperature",
+      id: "temperature", icon: "temperature", title: "Temperature",
       items: [
         { id: "temp-range", label: "Ambient install area temperature is within STEK's recommended range (60–85°F / 16–29°C).",
           measure: { unit: "°F", min: 60, max: 85, toC: function(f){ return (f - 32) * 5/9; }, altUnit: "°C", altMin: 16, altMax: 29 } },
@@ -204,14 +226,14 @@
       ]
     },
     {
-      id: "humidity", icon: "💧", title: "Humidity",
+      id: "humidity", icon: "humidity", title: "Humidity",
       items: [
         { id: "humidity-range", label: "Relative humidity is at or below 65% RH.", measure: { unit: "%", max: 65 } },
         { id: "humidity-condensation", label: "No visible condensation or surface moisture on the vehicle." }
       ]
     },
     {
-      id: "cleanliness", icon: "🧼", title: "Cleanliness",
+      id: "cleanliness", icon: "cleanliness", title: "Cleanliness",
       items: [
         { id: "floor-clean", label: "Floors are swept/vacuumed and free of dirt, sand, and debris." },
         { id: "workstation-clean", label: "Workstation, tools, and squeegees are clean and sanitized." },
@@ -220,7 +242,7 @@
       ]
     },
     {
-      id: "dust-control", icon: "🌀", title: "Dust Control",
+      id: "dust-control", icon: "dust-control", title: "Dust Control",
       items: [
         { id: "filtration-running", label: "Air filtration / positive-pressure system is running (if equipped)." },
         { id: "doors-sealed", label: "Bay doors and windows are closed to limit airborne particulate." },
@@ -229,7 +251,7 @@
       ]
     },
     {
-      id: "lighting", icon: "💡", title: "Lighting",
+      id: "lighting", icon: "lighting", title: "Lighting",
       items: [
         { id: "raking-light", label: "Adjustable raking/inspection light available to reveal surface imperfections." },
         { id: "even-coverage", label: "Overhead lighting evenly illuminates all panels with no major shadows." },
@@ -237,7 +259,7 @@
       ]
     },
     {
-      id: "surface-condition", icon: "🚗", title: "Vehicle Surface Condition",
+      id: "surface-condition", icon: "surface-condition", title: "Vehicle Surface Condition",
       items: [
         { id: "surface-clean", label: "Vehicle has been washed and decontaminated (no dirt, tar, tree sap, bug residue)." },
         { id: "surface-clayed", label: "Paint has been clay-barred / is free of bonded surface contaminants." },
@@ -437,7 +459,7 @@
       var head = document.createElement("div");
       head.className = "section-head";
       head.innerHTML =
-        '<div class="icon">' + section.icon + '</div>' +
+        '<div class="icon">' + (ICONS[section.icon] || "") + '</div>' +
         '<div class="titles"><h2>' + escapeHtml(section.title) + '</h2>' +
         '<div class="count">' + answered + ' / ' + section.items.length + ' checked</div></div>' +
         '<div class="section-badge ' + status + '">' + status.toUpperCase() + '</div>' +
@@ -531,7 +553,7 @@
       input.value = itState.value !== undefined ? itState.value : "";
       var unitSpan = document.createElement("span");
       unitSpan.style.fontSize = "13px";
-      unitSpan.style.color = "var(--gray)";
+      unitSpan.style.color = "var(--text-dim)";
       unitSpan.textContent = item.measure.unit;
       var hint = document.createElement("div");
       hint.className = "measure-hint";
@@ -572,7 +594,6 @@
           itState.result = itState.result === pair[0] ? "pending" : pair[0];
           renderSegButtons();
           renderTopbar();
-          renderSections.badgeOnly && renderSections.badgeOnly();
           updateSectionChrome();
           scheduleSave();
         });
@@ -620,8 +641,8 @@
 
   function buildReportHtml(){
     var status = overallStatus();
-    var statusColor = status === "pass" ? "#1a7a3c" : status === "fail" ? "#c62828" : "#b8860b";
-    var statusBg = status === "pass" ? "#e6f6ea" : status === "fail" ? "#fdecea" : "#fff6e0";
+    var statusColor = status === "pass" ? "#1a7a3c" : status === "fail" ? "#e2001a" : "#a3720a";
+    var statusBg = status === "pass" ? "#e6f6ea" : status === "fail" ? "#fdeaec" : "#fdf2de";
     var m = state.meta;
     var now = new Date();
     var reportId = "STEK-" + now.getFullYear() + String(now.getMonth()+1).padStart(2,"0") + String(now.getDate()).padStart(2,"0") + "-" + Math.random().toString(36).slice(2,7).toUpperCase();
@@ -629,14 +650,14 @@
     var sectionsHtml = SECTIONS.map(function(section){
       var sState = state.sections[section.id];
       var sStatus = sectionStatus(section);
-      var sColor = sStatus === "pass" ? "#1a7a3c" : sStatus === "fail" ? "#c62828" : "#b8860b";
-      var sBg = sStatus === "pass" ? "#e6f6ea" : sStatus === "fail" ? "#fdecea" : "#fff6e0";
+      var sColor = sStatus === "pass" ? "#1a7a3c" : sStatus === "fail" ? "#e2001a" : "#a3720a";
+      var sBg = sStatus === "pass" ? "#e6f6ea" : sStatus === "fail" ? "#fdeaec" : "#fdf2de";
 
       var rows = section.items.map(function(item){
         var itState = sState.items[item.id];
         var r = itState.result;
-        var rColor = r === "pass" ? "#1a7a3c" : r === "fail" ? "#c62828" : r === "na" ? "#6b7280" : "#b8860b";
-        var rBg = r === "pass" ? "#e6f6ea" : r === "fail" ? "#fdecea" : r === "na" ? "#f0f1f3" : "#fff6e0";
+        var rColor = r === "pass" ? "#1a7a3c" : r === "fail" ? "#e2001a" : r === "na" ? "#6b7280" : "#a3720a";
+        var rBg = r === "pass" ? "#e6f6ea" : r === "fail" ? "#fdeaec" : r === "na" ? "#f0f1f3" : "#fdf2de";
         var valueTxt = item.measure && itState.value !== "" && itState.value !== undefined ? (" (" + itState.value + item.measure.unit + ")") : "";
         return '<tr>' +
           '<td style="padding:8px 10px;border-bottom:1px solid #eef0f3;font-size:13px;">' + escapeHtml(item.label) + '<span style="color:#6b7280;">' + valueTxt + '</span></td>' +
@@ -653,7 +674,7 @@
 
       return '<div style="margin-bottom:18px;break-inside:avoid;">' +
         '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">' +
-        '<h3 style="font-size:14.5px;margin:0;">' + section.icon + ' ' + escapeHtml(section.title) + '</h3>' +
+        '<h3 style="font-size:14.5px;margin:0;color:#111;">' + escapeHtml(section.title) + '</h3>' +
         '<span style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;color:' + sColor + ';background:' + sBg + ';">' + sStatus.toUpperCase() + '</span>' +
         '</div>' +
         '<table style="width:100%;border-collapse:collapse;">' + rows + '</table>' +
@@ -668,9 +689,14 @@
       'table{width:100%;}' +
       '@media print{ body{padding:0;} }' +
       '</style></head><body>' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #0b3d91;padding-bottom:14px;margin-bottom:18px;">' +
-      '<div><h1 style="font-size:19px;margin:0;color:#0b3d91;">STEK PPF Install-Readiness Assessment</h1>' +
-      '<div style="font-size:12px;color:#6b7280;margin-top:4px;">Report ID: ' + reportId + ' &nbsp;•&nbsp; Generated ' + now.toLocaleString() + '</div></div>' +
+      '<div style="border-bottom:4px solid #e2001a;padding-bottom:14px;margin-bottom:20px;">' +
+      '<div style="display:flex;align-items:center;gap:8px;">' +
+      '<span style="font-size:22px;font-weight:900;letter-spacing:1.5px;color:#111;">STEK</span>' +
+      '<span style="width:3px;height:16px;background:#e2001a;display:inline-block;"></span>' +
+      '<span style="font-size:12px;font-weight:800;letter-spacing:3px;color:#e2001a;">PPF</span>' +
+      '</div>' +
+      '<h1 style="font-size:15px;margin:6px 0 0;color:#333;text-transform:uppercase;letter-spacing:.4px;font-weight:700;">Install-Readiness Assessment Report</h1>' +
+      '<div style="font-size:12px;color:#6b7280;margin-top:4px;">Report ID: ' + reportId + ' &nbsp;•&nbsp; Generated ' + now.toLocaleString() + '</div>' +
       '</div>' +
       '<div style="display:inline-block;padding:10px 18px;border-radius:10px;font-weight:800;font-size:15px;color:' + statusColor + ';background:' + statusBg + ';margin-bottom:18px;">' +
       statusLabel(status) + '</div>' +
@@ -688,7 +714,7 @@
   }
 
   function metaRow(label, value){
-    return '<tr><td style="padding:5px 10px 5px 0;color:#6b7280;width:150px;">' + label + '</td><td style="padding:5px 0;font-weight:600;">' + escapeHtml(value || "—") + '</td></tr>';
+    return '<tr><td style="padding:5px 10px 5px 0;color:#6b7280;width:150px;">' + label + '</td><td style="padding:5px 0;font-weight:600;color:#111;">' + escapeHtml(value || "—") + '</td></tr>';
   }
 
   function downloadFile(filename, content, mime){
