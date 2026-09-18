@@ -41,7 +41,6 @@ import UsdcEIcon from "../assets/tokens/USDC.e.png";
 import UsdtEIcon from "../assets/tokens/USDT.e.png";
 import VsoIcon from "../assets/tokens/VSO.png";
 import WavaxIcon from "../assets/tokens/WAVAX.png";
-import WBtcIcon from "../assets/tokens/WBTC.e.png";
 import WetIcon from "../assets/tokens/WET.png";
 import WethEIcon from "../assets/tokens/WETH.e.png";
 import XavaIcon from "../assets/tokens/XAVA.png";
@@ -357,13 +356,6 @@ export const wavax: IToken = {
     decimals: 18,
 };
 
-const wbtc: IToken = {
-    name: "WBTC.e",
-    address: "0x50b7545627a5162F82A992c33b87aDc75187B218",
-    img: WBtcIcon,
-    decimals: 8,
-};
-
 const wet: IToken = {
     name: "WET",
     address: "0xB1466d4cf0DCfC0bCdDcf3500F473cdACb88b56D",
@@ -436,7 +428,6 @@ export default [
     usdt,
     vso,
     wavax,
-    wbtc,
     wet,
     weth,
     xava,
