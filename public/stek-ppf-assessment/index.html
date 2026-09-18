@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b3d91" />
+<title>STEK PPF Install-Readiness Checklist</title>
+<style>
+  :root{
+    --blue:#0b3d91;
+    --blue-dark:#082a66;
+    --green:#1a7a3c;
+    --green-bg:#e6f6ea;
+    --red:#c62828;
+    --red-bg:#fdecea;
+    --amber:#b8860b;
+    --amber-bg:#fff6e0;
+    --gray:#6b7280;
+    --gray-bg:#f0f1f3;
+    --border:#dde1e6;
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --text:#1c2230;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
+  body{padding-bottom:64px;}
+  img{max-width:100%;}
+  h1,h2,h3{margin:0;}
+  button{font-family:inherit;cursor:pointer;}
+  input,textarea,select{font-family:inherit;}
+
+  .topbar{position:sticky;top:0;z-index:20;background:var(--blue);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-top,0px));padding-top:calc(12px + env(safe-area-inset-top,0px));box-shadow:0 2px 8px rgba(0,0,0,.15);}
+  .topbar-inner{max-width:760px;margin:0 auto;}
+  .topbar h1{font-size:17px;font-weight:700;letter-spacing:.2px;}
+  .topbar .sub{font-size:12px;opacity:.85;margin-top:2px;}
+  .status-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;}
+  .status-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:700;background:rgba(255,255,255,.15);}
+  .status-pill.pass{background:#1a7a3c;}
+  .status-pill.fail{background:#c62828;}
+  .status-pill.incomplete{background:#b8860b;}
+  .progress-wrap{flex:1;min-width:120px;height:8px;background:rgba(255,255,255,.25);border-radius:999px;overflow:hidden;}
+  .progress-bar{height:100%;background:#fff;border-radius:999px;transition:width .25s ease;}
+  .progress-label{font-size:11.5px;opacity:.85;white-space:nowrap;}
+
+  .container{max-width:760px;margin:0 auto;padding:16px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+  .card h2{font-size:15px;}
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+  @media (max-width:480px){.field-grid{grid-template-columns:1fr;}}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--gray);margin-bottom:4px;}
+  .field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:15px;background:#fafbfc;}
+  .field input:focus,.field textarea:focus,.field select:focus{outline:2px solid var(--blue);outline-offset:-1px;background:#fff;}
+  .field textarea{resize:vertical;min-height:56px;}
+
+  .section-card{padding:0;overflow:hidden;}
+  .section-head{display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer;-webkit-user-select:none;user-select:none;}
+  .section-head .icon{font-size:20px;width:28px;text-align:center;flex-shrink:0;}
+  .section-head .titles{flex:1;min-width:0;}
+  .section-head h2{font-size:15.5px;}
+  .section-head .count{font-size:12px;color:var(--gray);margin-top:2px;}
+  .section-badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--gray-bg);color:var(--gray);white-space:nowrap;}
+  .section-badge.pass{background:var(--green-bg);color:var(--green);}
+  .section-badge.fail{background:var(--red-bg);color:var(--red);}
+  .section-badge.incomplete{background:var(--amber-bg);color:var(--amber);}
+  .chevron{transition:transform .2s ease;color:var(--gray);flex-shrink:0;}
+  .section-card.open .chevron{transform:rotate(180deg);}
+  .section-body{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .section-card.open .section-body{max-height:4000px;}
+  .section-body-inner{padding:0 16px 16px;border-top:1px solid var(--border);}
+
+  .item{padding:14px 0;border-bottom:1px solid #eef0f3;}
+  .item:last-of-type{border-bottom:none;}
+  .item-label{font-size:14px;line-height:1.4;margin-bottom:10px;}
+  .measure-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
+  .measure-row input{width:90px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:15px;}
+  .measure-row select{padding:8px;border:1px solid var(--border);border-radius:8px;font-size:14px;}
+  .measure-hint{font-size:12px;color:var(--gray);flex-basis:100%;}
+  .measure-hint.pass{color:var(--green);}
+  .measure-hint.fail{color:var(--red);}
+
+  .seg{display:flex;gap:6px;}
+  .seg button{flex:1;min-height:40px;border-radius:9px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:700;color:var(--gray);transition:all .12s ease;}
+  .seg button.active.pass{background:var(--green);border-color:var(--green);color:#fff;}
+  .seg button.active.fail{background:var(--red);border-color:var(--red);color:#fff;}
+  .seg button.active.na{background:var(--gray);border-color:var(--gray);color:#fff;}
+
+  .section-extra{margin-top:6px;}
+  .section-extra label{display:block;font-size:12px;font-weight:600;color:var(--gray);margin:12px 0 4px;}
+  .section-extra textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;min-height:56px;background:#fafbfc;}
+
+  .photo-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .photo-thumb{position:relative;width:76px;height:76px;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+  .photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-thumb .rm{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:none;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center;}
+  .photo-add{width:76px;height:76px;border-radius:10px;border:2px dashed var(--border);background:#fafbfc;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--gray);font-size:11px;gap:2px;}
+  .photo-add span.plus{font-size:20px;line-height:1;}
+  .photo-add input{display:none;}
+
+  .actions-card{display:flex;flex-direction:column;gap:10px;}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 16px;border-radius:12px;border:none;font-size:14.5px;font-weight:700;min-height:46px;}
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:active{background:var(--blue-dark);}
+  .btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--text);}
+  .btn-danger{background:#fff;border:1.5px solid var(--red);color:var(--red);}
+  .btn-row{display:flex;gap:10px;}
+  .btn-row .btn{flex:1;}
+  .hint-text{font-size:12px;color:var(--gray);text-align:center;margin-top:2px;}
+
+  .save-toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%) translateY(20px);background:#1c2230;color:#fff;padding:9px 16px;border-radius:999px;font-size:12.5px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:30;}
+  .save-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  .footer-note{font-size:11.5px;color:var(--gray);text-align:center;padding:8px 20px 24px;line-height:1.5;}
+
+  #printArea{display:none;}
+  @media print{
+    .topbar,.container>.card:not(.print-only),.section-card,.actions-card,.save-toast{display:none !important;}
+    #printArea{display:block !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <h1>STEK PPF Install-Readiness Checklist</h1>
+    <div class="sub">Environment &amp; vehicle surface assessment</div>
+    <div class="status-row">
+      <span class="status-pill incomplete" id="overallPill">INCOMPLETE</span>
+      <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+      <span class="progress-label" id="progressLabel">0 / 0</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="card" id="metaCard">
+    <h2>Job Information</h2>
+    <div class="field-grid">
+      <div class="field"><label for="f-shop">Shop / Location Name</label><input id="f-shop" type="text" placeholder="e.g. Elite Auto Detailing" /></div>
+      <div class="field"><label for="f-assessor">Assessor Name</label><input id="f-assessor" type="text" placeholder="Your name" /></div>
+      <div class="field"><label for="f-date">Assessment Date</label><input id="f-date" type="date" /></div>
+      <div class="field"><label for="f-job">Job / Order Number</label><input id="f-job" type="text" placeholder="Optional" /></div>
+      <div class="field"><label for="f-vehicle">Vehicle (Year / Make / Model)</label><input id="f-vehicle" type="text" placeholder="e.g. 2024 Tesla Model Y" /></div>
+      <div class="field"><label for="f-vin">VIN (optional)</label><input id="f-vin" type="text" placeholder="17-character VIN" /></div>
+    </div>
+  </div>
+
+  <div id="sectionsHost"></div>
+
+  <div class="card">
+    <h2>Sign-off</h2>
+    <div class="field-grid">
+      <div class="field"><label for="f-sig">Assessor Signature (type full name)</label><input id="f-sig" type="text" placeholder="Type your full name to sign" /></div>
+      <div class="field"><label for="f-sigdate">Signed On</label><input id="f-sigdate" type="date" /></div>
+    </div>
+    <label style="display:flex;align-items:flex-start;gap:8px;margin-top:12px;font-size:13px;color:var(--gray);">
+      <input type="checkbox" id="f-certify" style="margin-top:3px;" />
+      I certify that this assessment accurately reflects the install environment and vehicle condition observed at the time of inspection.
+    </label>
+  </div>
+
+  <div class="card actions-card">
+    <h2 style="margin-bottom:2px;">Export Report</h2>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnPrint">🖨️ Print / Save as PDF</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-outline" id="btnDownloadHtml">⬇️ Download Report (HTML)</button>
+      <button class="btn btn-outline" id="btnDownloadJson">⬇️ Backup (JSON)</button>
+    </div>
+    <div class="btn-row">
+      <label class="btn btn-outline" style="margin:0;">
+        ⤴️ Restore Backup
+        <input type="file" id="fileRestore" accept="application/json" style="display:none;" />
+      </label>
+      <button class="btn btn-danger" id="btnReset">🗑️ New Assessment</button>
+    </div>
+    <div class="hint-text">The downloaded HTML report is self-contained (photos included) and can be emailed or submitted directly to STEK.</div>
+  </div>
+
+  <div class="footer-note">Draft is saved automatically on this device. STEK PPF is a trademark of its respective owner; this tool is an independent install-readiness aid.</div>
+</div>
+
+<div class="save-toast" id="saveToast">Draft saved</div>
+
+<div id="printArea"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORAGE_KEY = "stekPpfAssessmentV1";
+
+  var SECTIONS = [
+    {
+      id: "temperature", icon: "🌡️", title: "Temperature",
+      items: [
+        { id: "temp-range", label: "Ambient install area temperature is within STEK's recommended range (60–85°F / 16–29°C).",
+          measure: { unit: "°F", min: 60, max: 85, toC: function(f){ return (f - 32) * 5/9; }, altUnit: "°C", altMin: 16, altMax: 29 } },
+        { id: "temp-stable", label: "Temperature is stable — vehicle is not in direct sun, near HVAC vents, or exposed to drafts." }
+      ]
+    },
+    {
+      id: "humidity", icon: "💧", title: "Humidity",
+      items: [
+        { id: "humidity-range", label: "Relative humidity is at or below 65% RH.", measure: { unit: "%", max: 65 } },
+        { id: "humidity-condensation", label: "No visible condensation or surface moisture on the vehicle." }
+      ]
+    },
+    {
+      id: "cleanliness", icon: "🧼", title: "Cleanliness",
+      items: [
+        { id: "floor-clean", label: "Floors are swept/vacuumed and free of dirt, sand, and debris." },
+        { id: "workstation-clean", label: "Workstation, tools, and squeegees are clean and sanitized." },
+        { id: "no-overspray", label: "No nearby sanding, grinding, painting, or overspray risk." },
+        { id: "bay-organized", label: "Install bay is uncluttered with clear space on all sides of the vehicle." }
+      ]
+    },
+    {
+      id: "dust-control", icon: "🌀", title: "Dust Control",
+      items: [
+        { id: "filtration-running", label: "Air filtration / positive-pressure system is running (if equipped)." },
+        { id: "doors-sealed", label: "Bay doors and windows are closed to limit airborne particulate." },
+        { id: "no-active-dust", label: "No active sanding, grinding, or sweeping occurring in or near the bay." },
+        { id: "hvac-filters", label: "HVAC/vent filters are clean and not blowing visible dust." }
+      ]
+    },
+    {
+      id: "lighting", icon: "💡", title: "Lighting",
+      items: [
+        { id: "raking-light", label: "Adjustable raking/inspection light available to reveal surface imperfections." },
+        { id: "even-coverage", label: "Overhead lighting evenly illuminates all panels with no major shadows." },
+        { id: "no-glare", label: "No excessive glare or reflections obstructing visual inspection." }
+      ]
+    },
+    {
+      id: "surface-condition", icon: "🚗", title: "Vehicle Surface Condition",
+      items: [
+        { id: "surface-clean", label: "Vehicle has been washed and decontaminated (no dirt, tar, tree sap, bug residue)." },
+        { id: "surface-clayed", label: "Paint has been clay-barred / is free of bonded surface contaminants." },
+        { id: "surface-dry", label: "Surface and all panel gaps are completely dry." },
+        { id: "no-wax-sealant", label: "No wax, sealant, or ceramic coating residue present." },
+        { id: "no-active-damage", label: "No unresolved chips, rust, or active corrosion that would affect film adhesion." },
+        { id: "swirls-documented", label: "Pre-existing swirls/scratches have been inspected and documented with the customer." }
+      ]
+    }
+  ];
+
+  var TOTAL_ITEMS = SECTIONS.reduce(function(n,s){ return n + s.items.length; }, 0);
+
+  function defaultState(){
+    var sections = {};
+    SECTIONS.forEach(function(s){
+      var items = {};
+      s.items.forEach(function(it){
+        items[it.id] = { result: "pending", value: it.measure ? "" : undefined };
+      });
+      sections[s.id] = { items: items, notes: "", photos: [], open: s.id === SECTIONS[0].id };
+    });
+    return {
+      meta: { shop:"", assessor:"", date:"", job:"", vehicle:"", vin:"", sig:"", sigdate:"", certify:false },
+      sections: sections
+    };
+  }
+
+  var state = loadState();
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultState();
+      var parsed = JSON.parse(raw);
+      var base = defaultState();
+      base.meta = Object.assign(base.meta, parsed.meta || {});
+      SECTIONS.forEach(function(s){
+        if(parsed.sections && parsed.sections[s.id]){
+          var saved = parsed.sections[s.id];
+          base.sections[s.id].notes = saved.notes || "";
+          base.sections[s.id].photos = saved.photos || [];
+          if (typeof saved.open === "boolean") base.sections[s.id].open = saved.open;
+          s.items.forEach(function(it){
+            if(saved.items && saved.items[it.id]){
+              base.sections[s.id].items[it.id] = Object.assign(base.sections[s.id].items[it.id], saved.items[it.id]);
+            }
+          });
+        }
+      });
+      return base;
+    }catch(e){
+      return defaultState();
+    }
+  }
+
+  var saveTimer = null;
+  function scheduleSave(){
+    if(saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        showToast("Draft saved");
+      }catch(e){
+        showToast("Could not save (storage full)");
+      }
+    }, 400);
+  }
+
+  var toastTimer = null;
+  function showToast(msg){
+    var el = document.getElementById("saveToast");
+    el.textContent = msg;
+    el.classList.add("show");
+    if(toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 1400);
+  }
+
+  function itemResult(sectionId, itemId){
+    return state.sections[sectionId].items[itemId].result;
+  }
+
+  function sectionStatus(section){
+    var results = section.items.map(function(it){ return itemResult(section.id, it.id); });
+    if(results.some(function(r){ return r === "fail"; })) return "fail";
+    if(results.some(function(r){ return r === "pending"; })) return "incomplete";
+    return "pass";
+  }
+
+  function overallStatus(){
+    var statuses = SECTIONS.map(sectionStatus);
+    if(statuses.some(function(s){ return s === "fail"; })) return "fail";
+    if(statuses.some(function(s){ return s === "incomplete"; })) return "incomplete";
+    return "pass";
+  }
+
+  function answeredCount(){
+    var n = 0;
+    SECTIONS.forEach(function(s){
+      s.items.forEach(function(it){
+        if(itemResult(s.id, it.id) !== "pending") n++;
+      });
+    });
+    return n;
+  }
+
+  function statusLabel(s){
+    if(s === "pass") return "SUITABLE FOR STEK PPF INSTALL";
+    if(s === "fail") return "NOT SUITABLE — ISSUES FOUND";
+    return "INCOMPLETE";
+  }
+
+  function fToC(f){ return (f - 32) * 5 / 9; }
+
+  function autoSuggest(item, rawValue){
+    if(!item.measure || rawValue === "" || rawValue === null || rawValue === undefined) return null;
+    var val = parseFloat(rawValue);
+    if(isNaN(val)) return null;
+    var m = item.measure;
+    var ok = true;
+    var hint = "";
+    if(typeof m.min === "number" && val < m.min) ok = false;
+    if(typeof m.max === "number" && val > m.max) ok = false;
+    if(m.min !== undefined && m.max !== undefined){
+      hint = val + m.unit + " — needs to be " + m.min + "–" + m.max + m.unit;
+    } else if(m.max !== undefined){
+      hint = val + m.unit + " — needs to be at or below " + m.max + m.unit;
+    } else if(m.min !== undefined){
+      hint = val + m.unit + " — needs to be at or above " + m.min + m.unit;
+    }
+    return { ok: ok, hint: hint };
+  }
+
+  function render(){
+    renderTopbar();
+    renderMeta();
+    renderSections();
+  }
+
+  function renderTopbar(){
+    var status = overallStatus();
+    var pill = document.getElementById("overallPill");
+    pill.className = "status-pill " + status;
+    pill.textContent = statusLabel(status);
+    var answered = answeredCount();
+    document.getElementById("progressBar").style.width = (TOTAL_ITEMS ? (answered / TOTAL_ITEMS * 100) : 0) + "%";
+    document.getElementById("progressLabel").textContent = answered + " / " + TOTAL_ITEMS;
+  }
+
+  function renderMeta(){
+    var m = state.meta;
+    setVal("f-shop", m.shop); setVal("f-assessor", m.assessor); setVal("f-date", m.date);
+    setVal("f-job", m.job); setVal("f-vehicle", m.vehicle); setVal("f-vin", m.vin);
+    setVal("f-sig", m.sig); setVal("f-sigdate", m.sigdate);
+    document.getElementById("f-certify").checked = !!m.certify;
+  }
+  function setVal(id, v){
+    var el = document.getElementById(id);
+    if(el && el.value !== (v || "")) el.value = v || "";
+  }
+
+  function compressImage(file, cb){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var maxDim = 1280;
+        var w = img.width, h = img.height;
+        if(w > maxDim || h > maxDim){
+          if(w > h){ h = Math.round(h * maxDim / w); w = maxDim; }
+          else { w = Math.round(w * maxDim / h); h = maxDim; }
+        }
+        var canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        cb(canvas.toDataURL("image/jpeg", 0.72));
+      };
+      img.onerror = function(){ cb(e.target.result); };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  var host = document.getElementById("sectionsHost");
+
+  function renderSections(){
+    host.innerHTML = "";
+    SECTIONS.forEach(function(section){
+      var sState = state.sections[section.id];
+      var status = sectionStatus(section);
+      var answered = section.items.filter(function(it){ return itemResult(section.id, it.id) !== "pending"; }).length;
+
+      var card = document.createElement("div");
+      card.className = "card section-card" + (sState.open ? " open" : "");
+
+      var head = document.createElement("div");
+      head.className = "section-head";
+      head.innerHTML =
+        '<div class="icon">' + section.icon + '</div>' +
+        '<div class="titles"><h2>' + escapeHtml(section.title) + '</h2>' +
+        '<div class="count">' + answered + ' / ' + section.items.length + ' checked</div></div>' +
+        '<div class="section-badge ' + status + '">' + status.toUpperCase() + '</div>' +
+        '<div class="chevron">▾</div>';
+      head.addEventListener("click", function(){
+        sState.open = !sState.open;
+        card.classList.toggle("open");
+        scheduleSave();
+      });
+      card.appendChild(head);
+
+      var body = document.createElement("div");
+      body.className = "section-body";
+      var inner = document.createElement("div");
+      inner.className = "section-body-inner";
+
+      section.items.forEach(function(item){
+        inner.appendChild(renderItem(section, item));
+      });
+
+      var extra = document.createElement("div");
+      extra.className = "section-extra";
+      extra.innerHTML =
+        '<label>Additional Notes</label>' +
+        '<textarea placeholder="Optional notes for this section...">' + escapeHtml(sState.notes || "") + '</textarea>' +
+        '<label>Photos</label>' +
+        '<div class="photo-strip"></div>';
+      var ta = extra.querySelector("textarea");
+      ta.addEventListener("input", function(){ sState.notes = ta.value; scheduleSave(); });
+
+      var strip = extra.querySelector(".photo-strip");
+      renderPhotoStrip(strip, section.id);
+
+      inner.appendChild(extra);
+      body.appendChild(inner);
+      card.appendChild(body);
+      host.appendChild(card);
+    });
+  }
+
+  function renderPhotoStrip(strip, sectionId){
+    strip.innerHTML = "";
+    state.sections[sectionId].photos.forEach(function(photo, idx){
+      var thumb = document.createElement("div");
+      thumb.className = "photo-thumb";
+      thumb.innerHTML = '<img src="' + photo.data + '" alt="evidence photo" /><button class="rm" type="button">✕</button>';
+      thumb.querySelector(".rm").addEventListener("click", function(){
+        state.sections[sectionId].photos.splice(idx, 1);
+        renderPhotoStrip(strip, sectionId);
+        renderSections();
+        scheduleSave();
+      });
+      strip.appendChild(thumb);
+    });
+    var add = document.createElement("label");
+    add.className = "photo-add";
+    add.innerHTML = '<span class="plus">＋</span><span>Add</span><input type="file" accept="image/*" capture="environment" multiple />';
+    add.querySelector("input").addEventListener("change", function(ev){
+      var files = Array.prototype.slice.call(ev.target.files || []);
+      files.forEach(function(file){
+        compressImage(file, function(dataUrl){
+          state.sections[sectionId].photos.push({ id: "p" + Date.now() + Math.random().toString(36).slice(2), data: dataUrl });
+          renderPhotoStrip(strip, sectionId);
+          scheduleSave();
+        });
+      });
+      ev.target.value = "";
+    });
+    strip.appendChild(add);
+  }
+
+  function renderItem(section, item){
+    var sState = state.sections[section.id];
+    var itState = sState.items[item.id];
+
+    var wrap = document.createElement("div");
+    wrap.className = "item";
+
+    var label = document.createElement("div");
+    label.className = "item-label";
+    label.textContent = item.label;
+    wrap.appendChild(label);
+
+    if(item.measure){
+      var mrow = document.createElement("div");
+      mrow.className = "measure-row";
+      var input = document.createElement("input");
+      input.type = "number";
+      input.step = "any";
+      input.placeholder = "Value";
+      input.value = itState.value !== undefined ? itState.value : "";
+      var unitSpan = document.createElement("span");
+      unitSpan.style.fontSize = "13px";
+      unitSpan.style.color = "var(--gray)";
+      unitSpan.textContent = item.measure.unit;
+      var hint = document.createElement("div");
+      hint.className = "measure-hint";
+
+      function updateHint(){
+        var sug = autoSuggest(item, input.value);
+        if(!sug){ hint.textContent = ""; hint.className = "measure-hint"; return; }
+        hint.textContent = sug.hint + (sug.ok ? " ✓" : " ✗");
+        hint.className = "measure-hint " + (sug.ok ? "pass" : "fail");
+      }
+      updateHint();
+
+      input.addEventListener("input", function(){
+        itState.value = input.value;
+        var sug = autoSuggest(item, input.value);
+        if(sug){ itState.result = sug.ok ? "pass" : "fail"; renderSegButtons(); renderTopbar(); }
+        updateHint();
+        scheduleSave();
+      });
+
+      mrow.appendChild(input);
+      mrow.appendChild(unitSpan);
+      mrow.appendChild(hint);
+      wrap.appendChild(mrow);
+    }
+
+    var seg = document.createElement("div");
+    seg.className = "seg";
+
+    function renderSegButtons(){
+      seg.innerHTML = "";
+      [["pass","Pass"],["fail","Fail"],["na","N/A"]].forEach(function(pair){
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = pair[1];
+        if(itState.result === pair[0]) btn.className = "active " + pair[0];
+        btn.addEventListener("click", function(){
+          itState.result = itState.result === pair[0] ? "pending" : pair[0];
+          renderSegButtons();
+          renderTopbar();
+          renderSections.badgeOnly && renderSections.badgeOnly();
+          updateSectionChrome();
+          scheduleSave();
+        });
+        seg.appendChild(btn);
+      });
+    }
+    renderSegButtons();
+    wrap.appendChild(seg);
+
+    function updateSectionChrome(){
+      var cardEl = seg.closest(".section-card");
+      if(!cardEl) return;
+      var status = sectionStatus(section);
+      var badge = cardEl.querySelector(".section-badge");
+      if(badge){ badge.className = "section-badge " + status; badge.textContent = status.toUpperCase(); }
+      var answered = section.items.filter(function(it){ return itemResult(section.id, it.id) !== "pending"; }).length;
+      var count = cardEl.querySelector(".count");
+      if(count) count.textContent = answered + " / " + section.items.length + " checked";
+    }
+
+    return wrap;
+  }
+
+  function escapeHtml(str){
+    return String(str == null ? "" : str).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+
+  function bindMeta(){
+    [["f-shop","shop"],["f-assessor","assessor"],["f-date","date"],["f-job","job"],
+     ["f-vehicle","vehicle"],["f-vin","vin"],["f-sig","sig"],["f-sigdate","sigdate"]].forEach(function(pair){
+      var el = document.getElementById(pair[0]);
+      el.addEventListener("input", function(){
+        state.meta[pair[1]] = el.value;
+        scheduleSave();
+        if(pair[1] === "shop" || pair[1] === "vehicle") renderTopbar();
+      });
+    });
+    document.getElementById("f-certify").addEventListener("change", function(e){
+      state.meta.certify = e.target.checked;
+      scheduleSave();
+    });
+  }
+
+  function buildReportHtml(){
+    var status = overallStatus();
+    var statusColor = status === "pass" ? "#1a7a3c" : status === "fail" ? "#c62828" : "#b8860b";
+    var statusBg = status === "pass" ? "#e6f6ea" : status === "fail" ? "#fdecea" : "#fff6e0";
+    var m = state.meta;
+    var now = new Date();
+    var reportId = "STEK-" + now.getFullYear() + String(now.getMonth()+1).padStart(2,"0") + String(now.getDate()).padStart(2,"0") + "-" + Math.random().toString(36).slice(2,7).toUpperCase();
+
+    var sectionsHtml = SECTIONS.map(function(section){
+      var sState = state.sections[section.id];
+      var sStatus = sectionStatus(section);
+      var sColor = sStatus === "pass" ? "#1a7a3c" : sStatus === "fail" ? "#c62828" : "#b8860b";
+      var sBg = sStatus === "pass" ? "#e6f6ea" : sStatus === "fail" ? "#fdecea" : "#fff6e0";
+
+      var rows = section.items.map(function(item){
+        var itState = sState.items[item.id];
+        var r = itState.result;
+        var rColor = r === "pass" ? "#1a7a3c" : r === "fail" ? "#c62828" : r === "na" ? "#6b7280" : "#b8860b";
+        var rBg = r === "pass" ? "#e6f6ea" : r === "fail" ? "#fdecea" : r === "na" ? "#f0f1f3" : "#fff6e0";
+        var valueTxt = item.measure && itState.value !== "" && itState.value !== undefined ? (" (" + itState.value + item.measure.unit + ")") : "";
+        return '<tr>' +
+          '<td style="padding:8px 10px;border-bottom:1px solid #eef0f3;font-size:13px;">' + escapeHtml(item.label) + '<span style="color:#6b7280;">' + valueTxt + '</span></td>' +
+          '<td style="padding:8px 10px;border-bottom:1px solid #eef0f3;text-align:right;white-space:nowrap;">' +
+          '<span style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;color:' + rColor + ';background:' + rBg + ';">' + (r === "pending" ? "NOT CHECKED" : r.toUpperCase()) + '</span></td>' +
+          '</tr>';
+      }).join("");
+
+      var photosHtml = sState.photos.length ? ('<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">' +
+        sState.photos.map(function(p){ return '<img src="' + p.data + '" style="width:110px;height:110px;object-fit:cover;border-radius:8px;border:1px solid #dde1e6;" />'; }).join("") +
+        '</div>') : "";
+
+      var notesHtml = sState.notes ? ('<div style="margin-top:10px;font-size:13px;color:#374151;background:#fafbfc;border:1px solid #eef0f3;border-radius:8px;padding:8px 10px;"><strong>Notes:</strong> ' + escapeHtml(sState.notes) + '</div>') : "";
+
+      return '<div style="margin-bottom:18px;break-inside:avoid;">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">' +
+        '<h3 style="font-size:14.5px;margin:0;">' + section.icon + ' ' + escapeHtml(section.title) + '</h3>' +
+        '<span style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;color:' + sColor + ';background:' + sBg + ';">' + sStatus.toUpperCase() + '</span>' +
+        '</div>' +
+        '<table style="width:100%;border-collapse:collapse;">' + rows + '</table>' +
+        notesHtml + photosHtml +
+        '</div>';
+    }).join("");
+
+    return '<!DOCTYPE html><html><head><meta charset="UTF-8" />' +
+      '<title>STEK PPF Assessment Report' + (m.shop ? " — " + escapeHtml(m.shop) : "") + '</title>' +
+      '<style>' +
+      'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#1c2230;max-width:800px;margin:0 auto;padding:28px 20px;background:#fff;}' +
+      'table{width:100%;}' +
+      '@media print{ body{padding:0;} }' +
+      '</style></head><body>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #0b3d91;padding-bottom:14px;margin-bottom:18px;">' +
+      '<div><h1 style="font-size:19px;margin:0;color:#0b3d91;">STEK PPF Install-Readiness Assessment</h1>' +
+      '<div style="font-size:12px;color:#6b7280;margin-top:4px;">Report ID: ' + reportId + ' &nbsp;•&nbsp; Generated ' + now.toLocaleString() + '</div></div>' +
+      '</div>' +
+      '<div style="display:inline-block;padding:10px 18px;border-radius:10px;font-weight:800;font-size:15px;color:' + statusColor + ';background:' + statusBg + ';margin-bottom:18px;">' +
+      statusLabel(status) + '</div>' +
+      '<table style="width:100%;border-collapse:collapse;margin-bottom:22px;font-size:13.5px;">' +
+      metaRow("Shop / Location", m.shop) + metaRow("Assessor", m.assessor) + metaRow("Date", m.date) +
+      metaRow("Job / Order #", m.job) + metaRow("Vehicle", m.vehicle) + metaRow("VIN", m.vin) +
+      '</table>' +
+      sectionsHtml +
+      '<div style="margin-top:26px;padding-top:16px;border-top:1px solid #dde1e6;font-size:13px;color:#374151;">' +
+      '<div><strong>Signed by:</strong> ' + escapeHtml(m.sig || "—") + ' &nbsp; <strong>on</strong> ' + escapeHtml(m.sigdate || "—") + '</div>' +
+      '<div style="margin-top:6px;">' + (m.certify ? "✔ Assessor certified this assessment as accurate." : "⚠ Assessment not yet certified by assessor.") + '</div>' +
+      '</div>' +
+      '<div style="margin-top:24px;font-size:11px;color:#9ca3af;text-align:center;">Generated with the STEK PPF Install-Readiness Checklist tool. Submit this report alongside your install request as needed.</div>' +
+      '</body></html>';
+  }
+
+  function metaRow(label, value){
+    return '<tr><td style="padding:5px 10px 5px 0;color:#6b7280;width:150px;">' + label + '</td><td style="padding:5px 0;font-weight:600;">' + escapeHtml(value || "—") + '</td></tr>';
+  }
+
+  function downloadFile(filename, content, mime){
+    var blob = new Blob([content], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+  }
+
+  function safeName(){
+    var m = state.meta;
+    var base = "STEK-PPF-Assessment";
+    if(m.shop) base += "-" + m.shop.replace(/[^a-z0-9]+/gi, "-");
+    if(m.date) base += "-" + m.date;
+    return base;
+  }
+
+  document.getElementById("btnPrint").addEventListener("click", function(){
+    var reportHtml = buildReportHtml();
+    var win = window.open("", "_blank");
+    if(!win){ showToast("Please allow pop-ups to print"); return; }
+    win.document.open(); win.document.write(reportHtml); win.document.close();
+    setTimeout(function(){ win.focus(); win.print(); }, 300);
+  });
+
+  document.getElementById("btnDownloadHtml").addEventListener("click", function(){
+    downloadFile(safeName() + ".html", buildReportHtml(), "text/html");
+  });
+
+  document.getElementById("btnDownloadJson").addEventListener("click", function(){
+    downloadFile(safeName() + ".json", JSON.stringify(state, null, 2), "application/json");
+  });
+
+  document.getElementById("fileRestore").addEventListener("change", function(ev){
+    var file = ev.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var parsed = JSON.parse(e.target.result);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+        state = loadState();
+        render();
+        showToast("Backup restored");
+      }catch(err){
+        showToast("Invalid backup file");
+      }
+    };
+    reader.readAsText(file);
+    ev.target.value = "";
+  });
+
+  document.getElementById("btnReset").addEventListener("click", function(){
+    if(!confirm("Start a new assessment? This clears all current answers, notes, and photos on this device.")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    state = defaultState();
+    render();
+    showToast("New assessment started");
+  });
+
+  bindMeta();
+  render();
+})();
+</script>
+</body>
+</html>
